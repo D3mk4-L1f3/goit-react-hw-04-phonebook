@@ -1,23 +1,22 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 
-export default class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-    error: '',
-  };
+export default function ContactForm({ createContactsArray }) {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleInputChange = evt => {
+  const handleInputChange = evt => {
     const { name, value } = evt.currentTarget;
-    this.setState({ [name]: value, error: '' });
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
   };
 
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     evt.preventDefault();
-    const { name, number } = this.state;
-
     const formattedName = name.replace(/\b\w/g, l => l.toUpperCase());
     const formattedNumber = number.replace(/[^\d]/g, '');
     const phoneNumberWithHyphens = formattedNumber.replace(
@@ -31,43 +30,41 @@ export default class ContactForm extends Component {
       number: phoneNumberWithHyphens,
     };
 
-    this.props.createContactsArray(user);
+    createContactsArray(user);
 
-    this.setState({ name: '', number: '' });
+    setName('');
+    setNumber('');
   };
 
-  render() {
-    const { name, number } = this.state;
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name
-          <input
-            type="text"
-            name="name"
-            required
-            placeholder="... or full name"
-            value={name}
-            onChange={this.handleInputChange}
-            autoComplete="name"
-          />
-        </label>
-        <label>
-          Number
-          <input
-            type="tel"
-            name="number"
-            required
-            placeholder="only phone-number"
-            value={number}
-            onChange={this.handleInputChange}
-            autoComplete="tel"
-          />
-        </label>
-        <button type="submit">Add Contact</button>
-      </form>
-    );
-  }
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name
+        <input
+          type="text"
+          name="name"
+          required
+          placeholder="... or full name"
+          value={name}
+          onChange={handleInputChange}
+          autoComplete="name"
+        />
+      </label>
+      <label>
+        Number
+        <input
+          type="tel"
+          name="number"
+          required
+          placeholder="only phone-number"
+          value={number}
+          onChange={handleInputChange}
+          autoComplete="tel"
+        />
+      </label>
+      <button type="submit">Add Contact</button>
+    </form>
+  );
 }
 
 ContactForm.propTypes = {
