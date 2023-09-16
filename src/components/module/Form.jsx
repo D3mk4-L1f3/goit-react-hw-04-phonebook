@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 
+import {
+  FormAddStyle,
+  LabelStyle,
+} from 'components/styled-component/form.styled';
+
 export default function ContactForm({ createContactsArray }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -37,9 +42,9 @@ export default function ContactForm({ createContactsArray }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Name
+    <FormAddStyle onSubmit={handleSubmit}>
+      <LabelStyle>
+        Name:
         <input
           type="text"
           name="name"
@@ -49,9 +54,9 @@ export default function ContactForm({ createContactsArray }) {
           onChange={handleInputChange}
           autoComplete="name"
         />
-      </label>
-      <label>
-        Number
+      </LabelStyle>
+      <LabelStyle>
+        Number:
         <input
           type="tel"
           name="number"
@@ -61,9 +66,9 @@ export default function ContactForm({ createContactsArray }) {
           onChange={handleInputChange}
           autoComplete="tel"
         />
-      </label>
+      </LabelStyle>
       <button type="submit">Add Contact</button>
-    </form>
+    </FormAddStyle>
   );
 }
 
